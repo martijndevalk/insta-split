@@ -1,0 +1,41 @@
+:root {
+  --color-slate-50: #f8fafc;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
+  --color-slate-900: #0f172a;
+
+  --color-red-400: #f87171;
+  --color-red-500: #ef4444;
+  --color-red-600: #dc2626;
+
+  --color-pink-400: #f472b6;
+  --color-pink-500: #ec4899;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-slate-900);
+  color: var(--color-slate-50);
+  font-family: var(--font-main, 'Inter', sans-serif);
+  overflow: hidden;
+}
+
+input[type="range"] {
+  height: 6px;
+  -webkit-appearance: none;
+  background: var(--color-slate-700);
+  border-radius: 5px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--color-red-500);
+  border-radius: 50%;
+  cursor: pointer;
+}

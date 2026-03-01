@@ -1,0 +1,35 @@
+.sectionTitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-slate-400);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0 0 0.75rem 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.portraitBtn, .landscapeBtn {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 10px;
+  font-weight: 900;
+  cursor: pointer;
+  background: transparent;
+  color: var(--color-slate-50);
+  transition: all 0.2s ease;
+  border: 1px solid var(--color-slate-600);
+}
+
+.portraitBtn:hover, .landscapeBtn:hover {
+  border-color: var(--color-slate-400);
+}
+
+.portraitBtn[data-active="true"], .landscapeBtn[data-active="true"] {
+  border-color: var(--color-red-500);
+  background-color: rgba(239, 68, 68, 0.1); /* red-500/10 */
+}

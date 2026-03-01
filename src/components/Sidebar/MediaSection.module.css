@@ -1,0 +1,115 @@
+.sectionTitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-slate-400);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0 0 1rem 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.uploadBtn {
+  width: 100%;
+  padding: 1rem;
+  border: 2px dashed var(--color-slate-600);
+  border-radius: 0.75rem;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.uploadBtn:hover {
+  border-color: var(--color-red-500);
+}
+
+.uploadText {
+  font-size: 11px;
+  color: var(--color-slate-400);
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.uploadBtn:hover .uploadText {
+  color: var(--color-slate-300);
+}
+
+.bgGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.bgLabel {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-slate-500);
+  text-transform: uppercase;
+}
+
+.bgControls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.colorPickerWrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background-color: rgba(30, 41, 59, 0.5); /* slate-800/50 */
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-slate-700);
+}
+
+.colorText {
+  font-size: 11px;
+}
+
+.colorInput {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.iconBtn, .iconBtnDanger {
+  padding: 0.5rem;
+  background-color: rgba(30, 41, 59, 0.5); /* slate-800/50 */
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-slate-700);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  color: var(--color-slate-50);
+}
+
+.iconBtn:hover {
+  background-color: var(--color-slate-700);
+}
+
+.iconBtnDanger:hover {
+  background-color: rgba(239, 68, 68, 0.2); /* red-500/20 */
+  border-color: var(--color-slate-600);
+}
+
+.icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.hidden {
+  display: none;
+}

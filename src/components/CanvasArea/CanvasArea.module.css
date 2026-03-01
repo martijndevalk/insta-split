@@ -1,0 +1,101 @@
+.container {
+  background-color: var(--color-slate-900);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  background-color: rgba(30, 41, 59, 0.5); /* slate-800/50 */
+  border-bottom: 1px solid var(--color-slate-700);
+  z-index: 10;
+}
+
+.zoomControl {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  max-width: 20rem;
+}
+
+.toolbarLabel {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-slate-500);
+  text-transform: uppercase;
+}
+
+.zoomInput {
+  flex: 1;
+}
+
+.zoomText {
+  font-size: 10px;
+  font-family: monospace;
+  color: var(--color-slate-400);
+  width: 2rem;
+  text-align: right;
+}
+
+.resInfo {
+  font-size: 10px;
+  font-family: monospace;
+  color: var(--color-slate-500);
+}
+
+.scrollArea {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  align-items: flex-start;
+  padding: 150px;
+  background-image: radial-gradient(var(--color-slate-700) 1px, transparent 1px);
+  background-size: 30px 30px;
+  position: relative;
+  min-height: 100vh; /* ensure enough scroll space */
+}
+
+/*
+ * The original code used justify-content: flex-start and align-items: center.
+ * However, with flexbox and scrolling large child elements, sometimes part of the child
+ * is unreachable on the top/left. Using a spacer or margin: auto is safer, or just padding
+ * and allowing normal document flow. We'll use absolute padding or a centered block.
+ */
+
+.canvasWrapper {
+  position: relative;
+  flex-shrink: 0;
+  margin: auto;
+}
+
+.mainCanvas {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  background-color: white;
+  outline: none;
+  display: block;
+}
+
+.guideContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+}
+
+.guideLine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 2px dashed rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+}
