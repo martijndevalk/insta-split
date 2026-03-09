@@ -1,4 +1,5 @@
 import { useState, memo, type ReactNode } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import type { AppState } from '../../types';
 import { drawCanvas } from '../../utils/canvas';
 import styles from './DownloadSection.module.css';
@@ -9,9 +10,11 @@ interface DownloadSectionProps {
 
 export const DownloadSection = memo(function DownloadSection({ state }: DownloadSectionProps): ReactNode {
   const [downloading, setDownloading] = useState<boolean>(false);
+  const [progress, setProgress] = useState<number>(0);
 
   const handleDownload = async (): Promise<void> => {
     setDownloading(true);
+    setProgress(0);
 
     const { numSlices, SLICE_WIDTH, SLICE_HEIGHT, canvasWidth, canvasHeight, bgColor, bgImage, images } = state;
 
@@ -54,21 +57,47 @@ export const DownloadSection = memo(function DownloadSection({ state }: Download
       a.href = dataUrl;
       a.click();
 
+      setProgress(Math.round(((i + 1) / numSlices) * 100));
+
       // Small delay between downloads
       await new Promise<void>((r) => setTimeout(r, 300));
     }
 
     setDownloading(false);
+    setProgress(0);
   };
 
   return (
-    <button
-      className={styles.downloadBtn}
-      onClick={handleDownload}
-      disabled={downloading}
-    >
-      <span className="material-symbols-rounded">download</span>
-      {downloading ? 'Exporting...' : 'Export Slides'}
-    </button>
+    <div className={styles.wrapper}>
+      <motion.button
+        className={styles.downloadBtn}
+        onClick={handleDownload}
+        disabled={downloading}
+        whileHover={{ scale: 1.03, y: -2 }}
+        whileTap={{ scale: 0.97 }}
+      >
+        <span className="material-symbols-rounded">download</span>
+        {downloading ? `Exporting... ${progress}%` : 'Export Slides'}
+      </motion.button>
+
+      {/* Progress bar */}
+      <AnimatePresence>
+        {downloading && (
+          <motion.div
+            className={styles.progressTrack}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 4 }}
+            exit={{ opacity: 0, height: 0 }}
+          >
+            <motion.div
+              className={styles.progressBar}
+              initial={{ width: '0%' }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 0.3 }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 });

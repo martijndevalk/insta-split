@@ -1,4 +1,5 @@
 import { useRef, useCallback, memo, type ReactNode } from 'react';
+import { motion } from 'motion/react';
 import type { AppState, AppActions } from '../../types';
 import { Section, IconButton } from '../ui';
 import styles from './MediaSection.module.css';
@@ -18,6 +19,8 @@ export const MediaSection = memo(function MediaSection({ state, actions }: Media
   const onImagesChange = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
     if (e.target.files) {
       handleImagesUpload(e.target.files);
+      // Reset so the same file(s) can be re-selected
+      e.target.value = '';
     }
   }, [handleImagesUpload]);
 
@@ -28,16 +31,18 @@ export const MediaSection = memo(function MediaSection({ state, actions }: Media
   }, [handleBgUpload]);
 
   return (
-    <Section icon="image" title="Media">
+    <Section icon="image" title="Photos" step={1}>
       <div className={styles.content}>
         {/* Upload photos button */}
-        <button
+        <motion.button
           onClick={() => imgInputRef.current?.click()}
           className={styles.uploadBtn}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
         >
           <span className={`material-symbols-rounded ${styles.uploadIcon}`}>add_photo_alternate</span>
           <span className={styles.uploadText}>Add Photos</span>
-        </button>
+        </motion.button>
 
         {/* Background controls */}
         <div className={styles.bgGroup}>

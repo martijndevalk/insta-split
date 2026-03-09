@@ -1,4 +1,5 @@
 import { memo, useMemo, type ReactNode } from 'react';
+import { motion } from 'motion/react';
 import type { AppState, AppActions } from '../../types';
 import { Section, Slider } from '../ui';
 import styles from './ControlsSection.module.css';
@@ -49,7 +50,7 @@ export const ControlsSection = memo(function ControlsSection({ state, actions }:
   ], [numSlices, gap, padding, setNumSlices, setGap, setPadding]);
 
   return (
-    <Section icon="tune" title="Layout">
+    <Section icon="tune" title="Layout" step={3}>
       <div className={styles.content}>
         {sliders.map((slider) => (
           <Slider
@@ -63,10 +64,15 @@ export const ControlsSection = memo(function ControlsSection({ state, actions }:
           />
         ))}
 
-        <button onClick={handleShuffle} className={styles.shuffleBtn}>
+        <motion.button
+          onClick={handleShuffle}
+          className={styles.shuffleBtn}
+          whileHover={{ scale: 1.03, y: -1 }}
+          whileTap={{ scale: 0.97 }}
+        >
           <span className="material-symbols-rounded">shuffle</span>
           Shuffle Order
-        </button>
+        </motion.button>
       </div>
     </Section>
   );

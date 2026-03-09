@@ -1,0 +1,97 @@
+/* SplashScreen — Intro animation */
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--md-sys-color-surface, #0f172a);
+  gap: 1.5rem;
+}
+
+/* ── Background glow ── */
+
+.glow {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(220, 39, 67, 0.25) 0%,
+    rgba(188, 24, 136, 0.15) 40%,
+    transparent 70%
+  );
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+/* ── Logo halves ── */
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.logoHalf {
+  flex-shrink: 0;
+}
+
+.logoHalf svg {
+  display: block;
+}
+
+/* ── Split line ── */
+
+.splitLine {
+  width: 3px;
+  height: 200px;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.6) 0px,
+    rgba(255, 255, 255, 0.6) 12px,
+    transparent 12px,
+    transparent 24px
+  );
+  border-radius: 2px;
+  transform-origin: center;
+  margin: 0 -1px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Title ── */
+
+.title {
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+
+.titleInsta {
+  color: #fff;
+}
+
+.titleSplit {
+  background: linear-gradient(135deg, #f09433, #dc2743, #bc1888);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ── Subtitle ── */
+
+.subtitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--md-sys-color-muted, #64748b);
+  margin: 0;
+}

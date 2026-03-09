@@ -1,5 +1,11 @@
 /* DownloadSection — Material Design 3 inspired */
 
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-sys-spacing-sm);
+}
+
 .downloadBtn {
   width: 100%;
   background: linear-gradient(
@@ -26,17 +32,34 @@
 }
 
 .downloadBtn:hover:not(:disabled) {
-  transform: translateY(-2px);
   box-shadow: var(--md-sys-elevation-5);
   filter: brightness(1.1);
 }
 
 .downloadBtn:active:not(:disabled) {
-  transform: translateY(0);
   box-shadow: var(--md-sys-elevation-2);
 }
 
 .downloadBtn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+/* ── Progress Bar ── */
+
+.progressTrack {
+  width: 100%;
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progressBar {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--md-sys-color-primary) 0%,
+    var(--md-sys-color-secondary) 100%
+  );
+  border-radius: 2px;
 }

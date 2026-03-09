@@ -46,6 +46,7 @@ export interface AppActions {
   resetBg: () => void;
   setZoom: (zoom: number | ((prev: number) => number)) => void;
   swapImages: (fromId: string, toId: string) => void;
+  removeImage: (id: string) => void;
 }
 
 /** Height in pixels for each orientation */

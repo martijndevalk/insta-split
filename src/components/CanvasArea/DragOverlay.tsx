@@ -6,6 +6,7 @@ interface DragOverlayProps {
   images: LayoutImage[];
   scale: number;
   onSwap: (fromId: string, toId: string) => void;
+  onRemove: (id: string) => void;
 }
 
 interface Position {
@@ -13,7 +14,7 @@ interface Position {
   y: number;
 }
 
-export function DragOverlay({ images, scale, onSwap }: DragOverlayProps): ReactNode {
+export function DragOverlay({ images, scale, onSwap, onRemove }: DragOverlayProps): ReactNode {
   const [dragId, setDragId] = useState<string | null>(null);
   const [dragPos, setDragPos] = useState<Position>({ x: 0, y: 0 });
   const [hoverId, setHoverId] = useState<string | null>(null);
@@ -90,6 +91,15 @@ export function DragOverlay({ images, scale, onSwap }: DragOverlayProps): ReactN
     setHoverId(null);
   }, [dragId, hoverId, onSwap]);
 
+  const handleRemove = useCallback(
+    (e: React.PointerEvent, id: string): void => {
+      e.preventDefault();
+      e.stopPropagation();
+      onRemove(id);
+    },
+    [onRemove]
+  );
+
   return (
     <div
       ref={containerRef}
@@ -114,6 +124,16 @@ export function DragOverlay({ images, scale, onSwap }: DragOverlayProps): ReactN
             style={{ left: x, top: y, width: w, height: h }}
             onPointerDown={(e) => handlePointerDown(e, img)}
           >
+            {/* Delete button */}
+            {!isDragging && (
+              <button
+                className={styles.deleteBtn}
+                title="Remove photo"
+                onPointerDown={(e) => handleRemove(e, img.id)}
+              >
+                <span className="material-symbols-rounded">close</span>
+              </button>
+            )}
             {isHoverTarget && (
               <div className={styles.swapIndicator}>
                 <span className="material-symbols-rounded">swap_vert</span>

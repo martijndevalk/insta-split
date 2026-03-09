@@ -11,7 +11,7 @@ interface CanvasAreaProps {
 
 export function CanvasArea({ state, actions }: CanvasAreaProps): ReactNode {
   const { zoom, canvasWidth, canvasHeight, SLICE_WIDTH, numSlices, bgColor, bgImage, images } = state;
-  const { setZoom, swapImages } = actions;
+  const { setZoom, swapImages, removeImage } = actions;
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -165,7 +165,7 @@ export function CanvasArea({ state, actions }: CanvasAreaProps): ReactNode {
             ))}
           </div>
           {/* Drag Overlay */}
-          <DragOverlay images={images} scale={scale} onSwap={swapImages} />
+          <DragOverlay images={images} scale={scale} onSwap={swapImages} onRemove={removeImage} />
         </div>
       </div>
     </main>

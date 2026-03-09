@@ -1,12 +1,15 @@
 import { useState, useMemo, useCallback, type ReactNode } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
 import { Sidebar } from './Sidebar/Sidebar';
 import { CanvasArea } from './CanvasArea/CanvasArea';
+import { SplashScreen } from './SplashScreen';
 import styles from './App.module.css';
 import type { Orientation, ImageItem, AppState, AppActions } from '../types';
 import { SLICE_HEIGHT_MAP, SLICE_WIDTH } from '../types';
 import { loadImage, generateId, shuffleArray, validateImageMagicBytes, MAX_FILE_SIZE } from '../utils/canvas';
 
 export function App(): ReactNode {
+  const [showSplash, setShowSplash] = useState(true);
   const [orientation, setOrientation] = useState<Orientation>('portrait');
   const [numSlices, setNumSlices] = useState<number>(3);
   const [gap, setGap] = useState<number>(50);
@@ -15,6 +18,7 @@ export function App(): ReactNode {
   const [bgImage, setBgImage] = useState<HTMLImageElement | null>(null);
   const [images, setImages] = useState<ImageItem[]>([]);
   const [zoom, setZoom] = useState<number>(20);
+  const [swapFlash, setSwapFlash] = useState(false);
 
   const SLICE_HEIGHT = SLICE_HEIGHT_MAP[orientation];
   const canvasWidth = SLICE_WIDTH * numSlices;
@@ -53,6 +57,9 @@ export function App(): ReactNode {
       [next[fromIdx], next[toIdx]] = [next[toIdx], next[fromIdx]];
       return next;
     });
+    // Flash effect on swap
+    setSwapFlash(true);
+    setTimeout(() => setSwapFlash(false), 300);
   }, []);
 
   const MAX_IMAGES = 20;
@@ -82,7 +89,10 @@ export function App(): ReactNode {
     setImages((prev) => {
       const allowed = MAX_IMAGES - prev.length;
       if (allowed <= 0) return prev;
-      return [...prev, ...newImages.slice(0, allowed)];
+      const updated = [...prev, ...newImages.slice(0, allowed)];
+      // Auto-set slice count to match total number of images
+      setNumSlices(Math.max(1, Math.min(20, updated.length)));
+      return updated;
     });
   }, []);
 
@@ -102,6 +112,16 @@ export function App(): ReactNode {
   const resetBg = useCallback((): void => {
     setBgImage(null);
     setBgColor('#ffffff');
+  }, []);
+
+  const removeImage = useCallback((id: string): void => {
+    setImages((prev) => {
+      const updated = prev.filter((img) => img.id !== id);
+      if (updated.length > 0) {
+        setNumSlices(Math.max(1, Math.min(20, updated.length)));
+      }
+      return updated;
+    });
   }, []);
 
   /* ── State & actions bundles ── */
@@ -133,12 +153,35 @@ export function App(): ReactNode {
     resetBg,
     setZoom,
     swapImages,
-  }), [handleShuffle, handleImagesUpload, handleBgUpload, resetBg, swapImages]);
+    removeImage,
+  }), [handleShuffle, handleImagesUpload, handleBgUpload, resetBg, swapImages, removeImage]);
 
   return (
-    <div className={styles.mainLayout}>
-      <Sidebar state={state} actions={actions} />
-      <CanvasArea state={state} actions={actions} />
-    </div>
+    <>
+      <AnimatePresence>
+        {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
+      </AnimatePresence>
+      <motion.div
+        className={styles.mainLayout}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: showSplash ? 0 : 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Sidebar state={state} actions={actions} />
+        <CanvasArea state={state} actions={actions} />
+        {/* Swap flash overlay */}
+        <AnimatePresence>
+          {swapFlash && (
+            <motion.div
+              className={styles.swapFlash}
+              initial={{ opacity: 0.4 }}
+              animate={{ opacity: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            />
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </>
   );
 }
