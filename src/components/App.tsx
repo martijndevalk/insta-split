@@ -1,105 +1,112 @@
-import { useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useCallback, type ReactNode } from 'react';
 import { Sidebar } from './Sidebar/Sidebar';
 import { CanvasArea } from './CanvasArea/CanvasArea';
 import styles from './App.module.css';
+import type { Orientation, ImageItem, AppState, AppActions } from '../types';
+import { SLICE_HEIGHT_MAP, SLICE_WIDTH } from '../types';
+import { loadImage, generateId, shuffleArray, validateImageMagicBytes, MAX_FILE_SIZE } from '../utils/canvas';
 
-export type Orientation = 'portrait' | 'landscape';
-
-export type ImageItem = {
-  id: string;
-  img: HTMLImageElement;
-};
-
-export type LayoutImage = ImageItem & {
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-};
-
-export function App() {
+export function App(): ReactNode {
   const [orientation, setOrientation] = useState<Orientation>('portrait');
-  const [numSlices, setNumSlices] = useState(3);
-  const [gap, setGap] = useState(50);
-  const [padding, setPadding] = useState(100);
-  const [bgColor, setBgColor] = useState('#ffffff');
+  const [numSlices, setNumSlices] = useState<number>(3);
+  const [gap, setGap] = useState<number>(50);
+  const [padding, setPadding] = useState<number>(100);
+  const [bgColor, setBgColor] = useState<string>('#ffffff');
   const [bgImage, setBgImage] = useState<HTMLImageElement | null>(null);
   const [images, setImages] = useState<ImageItem[]>([]);
-  const [zoom, setZoom] = useState(20);
+  const [zoom, setZoom] = useState<number>(20);
 
-  const SLICE_WIDTH = 1080;
-  const SLICE_HEIGHT = orientation === 'portrait' ? 1350 : 1080;
+  const SLICE_HEIGHT = SLICE_HEIGHT_MAP[orientation];
   const canvasWidth = SLICE_WIDTH * numSlices;
   const canvasHeight = SLICE_HEIGHT;
 
   const layoutImages = useMemo(() => {
     if (images.length === 0) return [];
 
-    const totalGapsWidth = (images.length - 1) * gap;
-    const availableWidth = canvasWidth - (padding * 2) - totalGapsWidth;
-    const safeAvailableWidth = Math.max(10, availableWidth);
-
-    const sumOriginalWidths = images.reduce((sum, item) => {
-      const baseScale = (SLICE_HEIGHT * 0.8) / item.img.height;
-      return sum + (item.img.width * baseScale);
-    }, 0);
-
-    const finalScale = sumOriginalWidths > 0 ? safeAvailableWidth / sumOriginalWidths : 1;
-
+    const availableHeight = Math.max(10, canvasHeight - padding * 2);
     let currentX = padding;
+
     return images.map((item) => {
-      const baseScale = (SLICE_HEIGHT * 0.8) / item.img.height;
-      const w = item.img.width * baseScale * finalScale;
-      const h = item.img.height * baseScale * finalScale;
+      const scale = availableHeight / item.img.height;
+      const w = item.img.width * scale;
+      const h = availableHeight;
       const x = currentX;
-      const y = (canvasHeight - h) / 2;
+      const y = padding;
 
       currentX += w + gap;
-
       return { ...item, x, y, w, h };
     });
-  }, [images, canvasWidth, canvasHeight, gap, padding, SLICE_HEIGHT]);
+  }, [images, canvasHeight, gap, padding]);
 
-  const handleShuffle = () => {
+  /* ── Actions ── */
+
+  const handleShuffle = useCallback((): void => {
+    setImages((prev) => shuffleArray(prev));
+  }, []);
+
+  const swapImages = useCallback((fromId: string, toId: string): void => {
     setImages((prev) => {
-      const shuffled = [...prev];
-      for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-      }
-      return shuffled;
+      const next = [...prev];
+      const fromIdx = next.findIndex((img) => img.id === fromId);
+      const toIdx = next.findIndex((img) => img.id === toId);
+      if (fromIdx === -1 || toIdx === -1) return prev;
+      [next[fromIdx], next[toIdx]] = [next[toIdx], next[fromIdx]];
+      return next;
     });
-  };
+  }, []);
 
-  const handleImagesUpload = async (files: FileList) => {
+  const MAX_IMAGES = 20;
+  const ALLOWED_TYPES = ['image/png', 'image/jpeg'];
+
+  const handleImagesUpload = useCallback(async (files: FileList): Promise<void> => {
+    // Filter by MIME type, file size, and magic bytes
+    const candidates = Array.from(files).filter(
+      (f) => ALLOWED_TYPES.includes(f.type) && f.size <= MAX_FILE_SIZE
+    );
+    if (candidates.length === 0) return;
+
+    const filesToProcess = candidates.slice(0, MAX_IMAGES);
     const newImages: ImageItem[] = [];
-    for (const file of Array.from(files)) {
-      const img = await new Promise<HTMLImageElement>((resolve) => {
-        const i = new Image();
-        i.onload = () => resolve(i);
-        i.src = URL.createObjectURL(file);
-      });
-      newImages.push({ id: Math.random().toString(36).slice(2), img });
+    for (const file of filesToProcess) {
+      try {
+        const isValid = await validateImageMagicBytes(file);
+        if (!isValid) continue;
+        const img = await loadImage(file);
+        newImages.push({ id: generateId(), img });
+      } catch {
+        // Skip files that fail to load (corrupt, etc.)
+        console.warn(`Skipped invalid file: ${file.name}`);
+      }
     }
-    setImages((prev) => [...prev, ...newImages]);
-  };
-
-  const handleBgUpload = async (file: File) => {
-    const img = await new Promise<HTMLImageElement>((resolve) => {
-      const i = new Image();
-      i.onload = () => resolve(i);
-      i.src = URL.createObjectURL(file);
+    if (newImages.length === 0) return;
+    setImages((prev) => {
+      const allowed = MAX_IMAGES - prev.length;
+      if (allowed <= 0) return prev;
+      return [...prev, ...newImages.slice(0, allowed)];
     });
-    setBgImage(img);
-  };
+  }, []);
 
-  const resetBg = () => {
+  const handleBgUpload = useCallback(async (file: File): Promise<void> => {
+    try {
+      if (file.size > MAX_FILE_SIZE) return;
+      if (!ALLOWED_TYPES.includes(file.type)) return;
+      const isValid = await validateImageMagicBytes(file);
+      if (!isValid) return;
+      const img = await loadImage(file);
+      setBgImage(img);
+    } catch {
+      console.warn(`Failed to load background image: ${file.name}`);
+    }
+  }, []);
+
+  const resetBg = useCallback((): void => {
     setBgImage(null);
     setBgColor('#ffffff');
-  };
+  }, []);
 
-  // The actual state block passed around
-  const state = {
+  /* ── State & actions bundles ── */
+
+  const state: AppState = useMemo(() => ({
     orientation,
     numSlices,
     gap,
@@ -111,10 +118,10 @@ export function App() {
     canvasWidth,
     canvasHeight,
     SLICE_WIDTH,
-    SLICE_HEIGHT
-  };
+    SLICE_HEIGHT,
+  }), [orientation, numSlices, gap, padding, bgColor, bgImage, layoutImages, zoom, canvasWidth, canvasHeight]);
 
-  const actions = {
+  const actions: AppActions = useMemo(() => ({
     setOrientation,
     setNumSlices,
     setGap,
@@ -124,13 +131,14 @@ export function App() {
     handleImagesUpload,
     handleBgUpload,
     resetBg,
-    setZoom
-  };
+    setZoom,
+    swapImages,
+  }), [handleShuffle, handleImagesUpload, handleBgUpload, resetBg, swapImages]);
 
   return (
     <div className={styles.mainLayout}>
-      <Sidebar {...{ state, actions }} />
-      <CanvasArea {...{ state, actions }} />
+      <Sidebar state={state} actions={actions} />
+      <CanvasArea state={state} actions={actions} />
     </div>
   );
 }

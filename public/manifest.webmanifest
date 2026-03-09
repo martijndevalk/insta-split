@@ -1,14 +1,14 @@
 {
-  "name": "Whitelabel - Kickstarter",
-  "short_name": "Whitelabel",
-  "description": "Geef je digitale foto's een authentieke analoge film-look met professionele LUTs.",
-  "start_url": "/whitelabel/",
+  "name": "Insta-Split - Layout Editor",
+  "short_name": "Insta-Split",
+  "description": "Split your panorama photos into Instagram carousel slides. Privacy-first, runs entirely in your browser.",
+  "start_url": "/insta-split/",
   "display": "standalone",
   "background_color": "#f3f4f6",
   "theme_color": "#FDB913",
   "icons": [
     {
-      "src": "/whitelabel/favicon.svg",
+      "src": "/insta-split/favicon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

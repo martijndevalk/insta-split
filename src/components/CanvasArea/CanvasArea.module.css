@@ -1,34 +1,37 @@
+/* CanvasArea — Material Design 3 inspired */
+
 .container {
-  background-color: var(--color-slate-900);
+  background-color: var(--md-sys-color-surface);
   display: flex;
   flex-direction: column;
   position: relative;
   overflow: hidden;
 }
 
+/* ── Toolbar ── */
+
 .toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem 1.5rem;
-  background-color: rgba(30, 41, 59, 0.5); /* slate-800/50 */
-  border-bottom: 1px solid var(--color-slate-700);
+  padding: var(--md-sys-spacing-md) var(--md-sys-spacing-2xl);
+  background-color: var(--md-sys-color-surface-variant);
+  border-bottom: 1px solid var(--md-sys-color-outline);
   z-index: 10;
+  gap: var(--md-sys-spacing-lg);
 }
 
 .zoomControl {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: var(--md-sys-spacing-md);
   flex: 1;
   max-width: 20rem;
 }
 
-.toolbarLabel {
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--color-slate-500);
-  text-transform: uppercase;
+.toolbarIcon {
+  font-size: 18px;
+  color: var(--md-sys-color-on-surface-variant);
 }
 
 .zoomInput {
@@ -36,18 +39,28 @@
 }
 
 .zoomText {
-  font-size: 10px;
-  font-family: monospace;
-  color: var(--color-slate-400);
-  width: 2rem;
+  font-size: var(--md-sys-typescale-label-small);
+  font-family: var(--md-sys-typescale-mono-font);
+  color: var(--md-sys-color-on-surface-variant);
+  width: 2.5rem;
   text-align: right;
 }
 
 .resInfo {
-  font-size: 10px;
-  font-family: monospace;
-  color: var(--color-slate-500);
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-spacing-xs);
+  font-size: var(--md-sys-typescale-label-small);
+  font-family: var(--md-sys-typescale-mono-font);
+  color: var(--md-sys-color-muted);
 }
+
+.resIcon {
+  font-size: 16px;
+  color: var(--md-sys-color-muted);
+}
+
+/* ── Scrollable Canvas Area ── */
 
 .scrollArea {
   flex: 1;
@@ -55,18 +68,12 @@
   display: flex;
   align-items: flex-start;
   padding: 150px;
-  background-image: radial-gradient(var(--color-slate-700) 1px, transparent 1px);
+  background-image: radial-gradient(var(--md-sys-color-outline) 1px, transparent 1px);
   background-size: 30px 30px;
   position: relative;
-  min-height: 100vh; /* ensure enough scroll space */
+  min-height: 100vh;
+  cursor: grab;
 }
-
-/*
- * The original code used justify-content: flex-start and align-items: center.
- * However, with flexbox and scrolling large child elements, sometimes part of the child
- * is unreachable on the top/left. Using a spacer or margin: auto is safer, or just padding
- * and allowing normal document flow. We'll use absolute padding or a centered block.
- */
 
 .canvasWrapper {
   position: relative;
@@ -75,11 +82,14 @@
 }
 
 .mainCanvas {
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  box-shadow: var(--md-sys-elevation-5);
   background-color: white;
   outline: none;
   display: block;
+  border-radius: 2px;
 }
+
+/* ── Slice Guides ── */
 
 .guideContainer {
   position: absolute;

@@ -1,76 +1,45 @@
-.container {
-  padding: 1rem;
-  background-color: rgba(15, 23, 42, 0.4); /* slate-900/40 */
-  border-radius: 0.75rem;
-  border: 1px solid var(--color-slate-700);
-}
-
-.sectionTitle {
-  font-size: 10px;
-  font-weight: 900;
-  color: var(--color-slate-400);
-  text-transform: uppercase;
-  margin: 0 0 1rem 0;
-}
+/* ControlsSection — Material Design 3 inspired */
 
 .content {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: var(--md-sys-spacing-xl);
 }
 
-.controlGroup {
-  display: flex;
-  flex-direction: column;
-}
-
-.labelRow {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
-}
-
-.label {
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.valueRed {
-  font-size: 11px;
-  font-family: monospace;
-  color: var(--color-red-400);
-}
-
-.valuePink {
-  font-size: 11px;
-  font-family: monospace;
-  color: var(--color-pink-400);
-}
-
-.rangeInput {
+.shuffleBtn {
   width: 100%;
-}
-
-.magicBtn {
-  width: 100%;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  font-size: 10px;
-  font-weight: 900;
-  color: white;
+  padding: var(--md-sys-spacing-md);
+  border-radius: var(--md-sys-shape-corner-small);
+  font-size: var(--md-sys-typescale-label-small);
+  font-weight: 700;
+  color: var(--md-sys-color-on-primary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   border: none;
   cursor: pointer;
-  background: linear-gradient(135deg, var(--color-red-500) 0%, var(--color-pink-500) 100%);
-  transition: all 0.2s ease;
+  background: linear-gradient(
+    135deg,
+    var(--md-sys-color-primary) 0%,
+    var(--md-sys-color-secondary) 100%
+  );
+  transition:
+    opacity var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard),
+    transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard),
+    box-shadow var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--md-sys-spacing-sm);
+  box-shadow: var(--md-sys-elevation-1);
 }
 
-.magicBtn:hover {
+.shuffleBtn:hover {
   opacity: 0.9;
   transform: translateY(-1px);
+  box-shadow: var(--md-sys-elevation-2);
 }
 
-.magicBtn:active {
+.shuffleBtn:active {
   transform: translateY(0);
+  box-shadow: var(--md-sys-elevation-1);
 }

@@ -1,60 +1,73 @@
+import { memo, useMemo, type ReactNode } from 'react';
+import type { AppState, AppActions } from '../../types';
+import { Section, Slider } from '../ui';
 import styles from './ControlsSection.module.css';
 
-export function ControlsSection({ state, actions }: { state: any; actions: any }) {
+interface ControlsSectionProps {
+  state: AppState;
+  actions: AppActions;
+}
+
+interface SliderConfig {
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  onChange: (value: number) => void;
+  icon: string;
+}
+
+export const ControlsSection = memo(function ControlsSection({ state, actions }: ControlsSectionProps): ReactNode {
   const { numSlices, gap, padding } = state;
   const { setNumSlices, setGap, setPadding, handleShuffle } = actions;
 
+  const sliders: SliderConfig[] = useMemo(() => [
+    {
+      label: 'Slice Count',
+      value: numSlices,
+      min: 1,
+      max: 20,
+      onChange: setNumSlices,
+      icon: 'grid_view',
+    },
+    {
+      label: 'Spacing',
+      value: gap,
+      min: 0,
+      max: 300,
+      onChange: setGap,
+      icon: 'space_bar',
+    },
+    {
+      label: 'Padding',
+      value: padding,
+      min: 0,
+      max: 800,
+      onChange: setPadding,
+      icon: 'padding',
+    },
+  ], [numSlices, gap, padding, setNumSlices, setGap, setPadding]);
+
   return (
-    <section className={styles.container}>
-      <h3 className={styles.sectionTitle}>2. Layout Instellingen</h3>
-
+    <Section icon="tune" title="Layout">
       <div className={styles.content}>
-        <div className={styles.controlGroup}>
-          <div className={styles.labelRow}>
-            <label className={styles.label}>Aantal Slices (Max 20)</label>
-            <span className={styles.valueRed}>{numSlices}</span>
-          </div>
-          <input
-            type="range"
-            value={numSlices}
-            min="1" max="20"
-            onChange={(e) => setNumSlices(Number(e.target.value))}
-            className={styles.rangeInput}
+        {sliders.map((slider) => (
+          <Slider
+            key={slider.label}
+            label={slider.label}
+            icon={slider.icon}
+            value={slider.value}
+            min={slider.min}
+            max={slider.max}
+            onChange={slider.onChange}
           />
-        </div>
+        ))}
 
-        <div className={styles.controlGroup}>
-          <div className={styles.labelRow}>
-            <label className={styles.label}>Tussenruimte (Gap)</label>
-            <span className={styles.valuePink}>{gap}</span>
-          </div>
-          <input
-            type="range"
-            value={gap}
-            min="0" max="300"
-            onChange={(e) => setGap(Number(e.target.value))}
-            className={styles.rangeInput}
-          />
-        </div>
-
-        <div className={styles.controlGroup}>
-          <div className={styles.labelRow}>
-            <label className={styles.label}>Zij-marge (Padding)</label>
-            <span className={styles.valuePink}>{padding}</span>
-          </div>
-          <input
-            type="range"
-            value={padding}
-            min="0" max="800"
-            onChange={(e) => setPadding(Number(e.target.value))}
-            className={styles.rangeInput}
-          />
-        </div>
-
-        <button onClick={handleShuffle} className={styles.magicBtn}>
-          Hussel Volgorde
+        <button onClick={handleShuffle} className={styles.shuffleBtn}>
+          <span className="material-symbols-rounded">shuffle</span>
+          Shuffle Order
         </button>
       </div>
-    </section>
+    </Section>
   );
-}
+});

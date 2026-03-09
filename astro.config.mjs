@@ -4,6 +4,6 @@ import react from '@astrojs/react';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://martijndevalk.github.io',
-  base: '/whitelabel',
+  base: '/insta-split',
   integrations: [react()],
 });

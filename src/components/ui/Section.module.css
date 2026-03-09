@@ -1,0 +1,25 @@
+/* Section — Reusable sidebar section with title */
+
+.section {
+  padding: var(--md-sys-spacing-lg);
+  background-color: var(--md-sys-color-surface-container-high);
+  border-radius: var(--md-sys-shape-corner-medium);
+  border: 1px solid var(--md-sys-color-outline);
+}
+
+.sectionTitle {
+  font-size: var(--md-sys-typescale-label-small);
+  font-weight: 900;
+  color: var(--md-sys-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0 0 var(--md-sys-spacing-lg) 0;
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-spacing-sm);
+}
+
+.sectionIcon {
+  font-size: 16px;
+  color: var(--md-sys-color-primary);
+}

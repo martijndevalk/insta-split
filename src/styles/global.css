@@ -1,41 +1,153 @@
+/* ===================================================================
+   Insta-Split — Global Design Tokens (Material Design 3 inspired)
+   =================================================================== */
+
 :root {
-  --color-slate-50: #f8fafc;
-  --color-slate-400: #94a3b8;
-  --color-slate-500: #64748b;
-  --color-slate-600: #475569;
-  --color-slate-700: #334155;
-  --color-slate-800: #1e293b;
-  --color-slate-900: #0f172a;
+  /* ── Surface / Background ── */
+  --md-sys-color-surface:            #0f172a;
+  --md-sys-color-surface-container:  #1e293b;
+  --md-sys-color-surface-container-high: rgba(15, 23, 42, 0.4);
+  --md-sys-color-surface-variant:    rgba(30, 41, 59, 0.5);
+  --md-sys-color-on-surface:         #f8fafc;
+  --md-sys-color-on-surface-variant: #94a3b8;
 
-  --color-red-400: #f87171;
-  --color-red-500: #ef4444;
-  --color-red-600: #dc2626;
+  /* ── Outline / Borders ── */
+  --md-sys-color-outline:            #334155;
+  --md-sys-color-outline-variant:    #475569;
 
-  --color-pink-400: #f472b6;
-  --color-pink-500: #ec4899;
+  /* ── Primary (Red / Pink gradient accent) ── */
+  --md-sys-color-primary:            #ef4444;
+  --md-sys-color-primary-dark:       #dc2626;
+  --md-sys-color-primary-light:      #f87171;
+  --md-sys-color-on-primary:         #ffffff;
+  --md-sys-color-primary-container:  rgba(239, 68, 68, 0.1);
+
+  /* ── Secondary (Pink) ── */
+  --md-sys-color-secondary:          #ec4899;
+  --md-sys-color-secondary-light:    #f472b6;
+  --md-sys-color-on-secondary:       #ffffff;
+
+  /* ── Tertiary (Purple — drag interactions) ── */
+  --md-sys-color-tertiary:           #8b5cf6;
+  --md-sys-color-tertiary-container: rgba(139, 92, 246, 0.15);
+
+  /* ── Success (Green — swap indicator) ── */
+  --md-sys-color-success:            #22c55e;
+  --md-sys-color-success-container:  rgba(34, 197, 94, 0.25);
+
+  /* ── Muted text levels ── */
+  --md-sys-color-muted:              #64748b;
+  --md-sys-color-muted-dim:          #475569;
+
+  /* ── Typography ── */
+  --md-sys-typescale-body-font:      'Inter', system-ui, -apple-system, sans-serif;
+  --md-sys-typescale-mono-font:      'JetBrains Mono', 'Fira Code', monospace;
+
+  --md-sys-typescale-label-small:    0.625rem;    /* 10px */
+  --md-sys-typescale-label-medium:   0.6875rem;   /* 11px */
+  --md-sys-typescale-body-small:     0.75rem;     /* 12px */
+  --md-sys-typescale-body-medium:    0.875rem;    /* 14px */
+  --md-sys-typescale-title-medium:   1.5rem;      /* 24px */
+
+  /* ── Shape ── */
+  --md-sys-shape-corner-small:       0.5rem;
+  --md-sys-shape-corner-medium:      0.75rem;
+  --md-sys-shape-corner-large:       1rem;
+
+  /* ── Elevation (shadow) ── */
+  --md-sys-elevation-1:              0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --md-sys-elevation-2:              0 4px 6px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
+  --md-sys-elevation-3:              0 10px 15px rgba(0, 0, 0, 0.4), 0 4px 6px rgba(0, 0, 0, 0.3);
+  --md-sys-elevation-5:              0 25px 50px -12px rgba(0, 0, 0, 0.7);
+
+  /* ── Motion ── */
+  --md-sys-motion-duration-short:    150ms;
+  --md-sys-motion-duration-medium:   200ms;
+  --md-sys-motion-duration-long:     350ms;
+  --md-sys-motion-easing-standard:   cubic-bezier(0.2, 0, 0, 1);
+  --md-sys-motion-easing-emphasized: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* ── Spacing ── */
+  --md-sys-spacing-xs:               0.25rem;
+  --md-sys-spacing-sm:               0.5rem;
+  --md-sys-spacing-md:               0.75rem;
+  --md-sys-spacing-lg:               1rem;
+  --md-sys-spacing-xl:               1.25rem;
+  --md-sys-spacing-2xl:              1.5rem;
+  --md-sys-spacing-3xl:              2rem;
+
+  /* ── Layout ── */
+  --md-sidebar-width:                350px;
+}
+
+/* ── Reset & Base ── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--md-sys-typescale-body-font);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   margin: 0;
-  background-color: var(--color-slate-900);
-  color: var(--color-slate-50);
-  font-family: var(--font-main, 'Inter', sans-serif);
+  padding: 0;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--md-sys-typescale-body-font);
   overflow: hidden;
+  min-height: 100vh;
 }
+
+button {
+  font-family: inherit;
+}
+
+/* ── Material Range Input ── */
 
 input[type="range"] {
   height: 6px;
   -webkit-appearance: none;
-  background: var(--color-slate-700);
-  border-radius: 5px;
+  appearance: none;
+  background: var(--md-sys-color-outline);
+  border-radius: 3px;
   outline: none;
+  transition: background var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
+}
+
+input[type="range"]:hover {
+  background: var(--md-sys-color-outline-variant);
 }
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
+  appearance: none;
   width: 18px;
   height: 18px;
-  background: var(--color-red-500);
+  background: var(--md-sys-color-primary);
   border-radius: 50%;
   cursor: pointer;
+  box-shadow: var(--md-sys-elevation-1);
+  transition: transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-emphasized),
+              box-shadow var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: var(--md-sys-elevation-2);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: var(--md-sys-color-primary);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--md-sys-elevation-1);
 }

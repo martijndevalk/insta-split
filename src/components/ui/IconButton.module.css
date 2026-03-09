@@ -1,0 +1,25 @@
+/* IconButton — Reusable icon-only button */
+
+.iconBtn {
+  padding: var(--md-sys-spacing-sm);
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: var(--md-sys-shape-corner-small);
+  border: 1px solid var(--md-sys-color-outline);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
+  color: var(--md-sys-color-on-surface);
+  font-size: 18px;
+}
+
+.iconBtn:hover {
+  background-color: var(--md-sys-color-outline);
+}
+
+.iconBtn[data-variant="danger"]:hover {
+  background-color: var(--md-sys-color-primary-container);
+  border-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-primary);
+}

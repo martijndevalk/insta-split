@@ -1,62 +1,78 @@
-.sectionTitle {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--color-slate-400);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin: 0 0 1rem 0;
-}
+/* MediaSection — Material Design 3 inspired */
 
-.container {
+.content {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--md-sys-spacing-md);
 }
+
+/* ── Upload Button ── */
 
 .uploadBtn {
   width: 100%;
-  padding: 1rem;
-  border: 2px dashed var(--color-slate-600);
-  border-radius: 0.75rem;
+  padding: var(--md-sys-spacing-lg);
+  border: 2px dashed var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-medium);
   background: transparent;
+  color: var(--md-sys-color-on-surface);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--md-sys-spacing-sm);
 }
 
 .uploadBtn:hover {
-  border-color: var(--color-red-500);
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-primary-container);
+}
+
+.uploadIcon {
+  font-size: 20px;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: color var(--md-sys-motion-duration-medium);
+}
+
+.uploadBtn:hover .uploadIcon {
+  color: var(--md-sys-color-primary);
 }
 
 .uploadText {
-  font-size: 11px;
-  color: var(--color-slate-400);
+  font-size: var(--md-sys-typescale-label-medium);
+  color: var(--md-sys-color-on-surface-variant);
   font-weight: 700;
   text-transform: uppercase;
-  transition: color 0.2s;
+  transition: color var(--md-sys-motion-duration-medium);
 }
 
 .uploadBtn:hover .uploadText {
-  color: var(--color-slate-300);
+  color: var(--md-sys-color-on-surface);
 }
+
+/* ── Background Controls ── */
 
 .bgGroup {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--md-sys-spacing-sm);
 }
 
 .bgLabel {
-  font-size: 10px;
+  font-size: var(--md-sys-typescale-label-small);
   font-weight: 700;
-  color: var(--color-slate-500);
+  color: var(--md-sys-color-muted);
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-spacing-xs);
 }
 
 .bgControls {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--md-sys-spacing-sm);
 }
 
 .colorPickerWrapper {
@@ -64,51 +80,27 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem;
-  background-color: rgba(30, 41, 59, 0.5); /* slate-800/50 */
-  border-radius: 0.5rem;
-  border: 1px solid var(--color-slate-700);
+  padding: var(--md-sys-spacing-sm);
+  background-color: var(--md-sys-color-surface-variant);
+  border-radius: var(--md-sys-shape-corner-small);
+  border: 1px solid var(--md-sys-color-outline);
 }
 
 .colorText {
-  font-size: 11px;
+  font-size: var(--md-sys-typescale-label-medium);
 }
 
 .colorInput {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.5rem;
+  height: 1.5rem;
   border: none;
   background: transparent;
   cursor: pointer;
   padding: 0;
+  border-radius: 50%;
 }
 
-.iconBtn, .iconBtnDanger {
-  padding: 0.5rem;
-  background-color: rgba(30, 41, 59, 0.5); /* slate-800/50 */
-  border-radius: 0.5rem;
-  border: 1px solid var(--color-slate-700);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  color: var(--color-slate-50);
-}
-
-.iconBtn:hover {
-  background-color: var(--color-slate-700);
-}
-
-.iconBtnDanger:hover {
-  background-color: rgba(239, 68, 68, 0.2); /* red-500/20 */
-  border-color: var(--color-slate-600);
-}
-
-.icon {
-  width: 1rem;
-  height: 1rem;
-}
+/* ── Hidden ── */
 
 .hidden {
   display: none;
